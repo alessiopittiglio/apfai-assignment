@@ -7,12 +7,12 @@
 # scaling efficiency. Each run is repeated `NREPS` times; the script
 # prints all individual execution times on standard output.
 #-----------------------------------------------------------------------
-# NOTE: the problem size is determined by two main parameters: `N` (the
-# number of neurons in the input layer) and `K` (the number of layers).
-# You may want to change these values according to the performance of 
-# the text machine. Ideally, the problem size should be large enough (at 
-# least a few seconds, ideally 10s or more) so that the OpenMP and 
-# scheduling overheads are minimized.
+# NOTE: the problem size is determined by two main parameters: `N` 
+# (the number of neurons in the input layer) and `K` (the number of
+# layers). You may want to change these values according to the
+# performance of the text machine. Ideally, the problem size should be
+# large enough (at least a few seconds, ideally 10s or more) so that
+# the OpenMP and scheduling overheads are minimized.
 
 # Last updated on 2025-09-23
 # Alessio Pittiglio
