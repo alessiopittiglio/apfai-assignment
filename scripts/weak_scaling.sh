@@ -22,7 +22,7 @@
 # Alessio Pittiglio
 
 PROG=./src_omp/main_omp # name of the executable
-N0=1000000              # base problem size; you may want to change this
+N0=250000               # base problem size; you may want to change this
 K=1500                  # number of layers
 CORES=`cat /proc/cpuinfo | grep processor | wc -l` # number of (logical) cores
 NREPS=5                 # number of replications
