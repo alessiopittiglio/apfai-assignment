@@ -19,7 +19,7 @@
 
 PROG=./src_omp/main_omp # name of the executable
 N=1000000               # number of neurons in input layer (adjust as needed)
-K=1000                  # number of layers (adjust as needed)
+K=1500                  # number of layers (adjust as needed)
 CORES=`cat /proc/cpuinfo | grep processor | wc -l` # number of (logical) cores
 NREPS=5                 # number of replications.
 
