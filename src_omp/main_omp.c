@@ -44,18 +44,18 @@ static inline float sigmoid(float x) {
 }
 
 /* Fills layer, weights, and bias with random values in [0,1] */
-static void fill(float *layer, int n, float *W, int r, float *bias) {
+static void fill(float *layer, int n, float *W, int r, float *b) {
     for (int i = 0; i < n; i++) {
         layer[i] = (float)rand() / (float)RAND_MAX;
     }
     for (int i = 0; i < r * n; i++) {
         W[i] = (float)rand() / (float)RAND_MAX;
     }
-    *bias = (float)rand() / (float)RAND_MAX;
+    *b = (float)rand() / (float)RAND_MAX;
 }
 
 /* Forward pass through a 1D multi-layer network */
-void forward_pass(float *layers[2], int N, int K, float *W, float bias) {
+void forward_pass(float *layers[2], int N, int K, float *W, float b) {
     int current_in = 0;
     int current_size = N;
 
@@ -65,11 +65,11 @@ void forward_pass(float *layers[2], int N, int K, float *W, float bias) {
         float *y = layers[1 - current_in];
 
         #pragma omp parallel for schedule(static) default(none) \
-            shared(x, y, W, next_size, bias)
+            shared(x, y, W, next_size, b)
         for (int i = 0; i < next_size; ++i) {
             const float *p_x = &x[i];
             const float *p_W  = &W[i * R];
-            float sum = bias;
+            float sum = b;
 
             #if R == 3
                 sum += p_x[0] * p_W[0];
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     layers[0] = (float*)malloc(N * sizeof(float));
     layers[1] = (float*)malloc(N * sizeof(float));
     float *W = (float*)malloc(N * R * sizeof(float));
-    float bias;
+    float b;
 
     if (!layers[0] || !layers[1] || !W) {
         fprintf(stderr, "Memory allocation failed.\n");
@@ -134,12 +134,12 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    fill(layers[0], N, W, R, &bias);
+    fill(layers[0], N, W, R, &b);
 
     printf("1D NN forward pass (N=%d, K=%d, R=%d)\n", N, K, R);
 
     double start_time = hpc_gettime();
-    forward_pass(layers, N, K, W, bias);
+    forward_pass(layers, N, K, W, b);
     double end_time = hpc_gettime();
 
     printf("Execution time %f\n", end_time - start_time);
