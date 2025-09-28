@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) {
     forward_pass(layers, N, K, W, b);
     double end_time = hpc_gettime();
 
-    printf("Execution time %f\n", end_time - start_time);
+    printf("Execution time: %.6f s\n", end_time - start_time);
 
     free(layers[0]);
     free(layers[1]);
