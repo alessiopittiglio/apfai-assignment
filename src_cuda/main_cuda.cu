@@ -117,6 +117,7 @@ __global__ void compute_layer_shared(
     const float *W,
     float b,
     int N,
+    int in_size,
     int out_size
 ) {
     __shared__ float tile[BLKDIM + R - 1];
@@ -124,7 +125,7 @@ __global__ void compute_layer_shared(
     int gindex = threadIdx.x + blockIdx.x * blockDim.x;
     int lindex = threadIdx.x;
 
-    if (gindex < N) {
+    if (gindex < in_size) {
         tile[lindex] = x[gindex];
     } else {
         tile[lindex] = 0.0f;
@@ -134,7 +135,7 @@ __global__ void compute_layer_shared(
     int halo_idx = block_end + threadIdx.x;
     // right halo
     if (lindex < (R - 1)) {
-        if (halo_idx < N)
+        if (halo_idx < in_size)
             tile[blockDim.x + lindex] = x[halo_idx];
         else
             tile[blockDim.x + lindex] = 0.0f;
@@ -247,6 +248,9 @@ int main(int argc, char *argv[]) {
         cudaMemcpyDeviceToHost
     );
 
+    /* Re-copy input layer to device for the next test */
+    cudaMemcpy(buf.d_layers[0], h_x, n_size, cudaMemcpyHostToDevice);
+
     /* -------------------------------------------------------------------
      * Forward pass WITH shared memory
      * ----------------------------------------------------------------- */
@@ -266,6 +270,7 @@ int main(int argc, char *argv[]) {
             buf.d_W,
             h_b,
             N,
+            current_size,
             next_size
         );
         
