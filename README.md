@@ -1,6 +1,12 @@
 # Architectures and Platforms for AI - Programming Assignment
 
-This project implements the evaluation of a sparsely connected multi-layer Neural Network using OpenMP and CUDA. Each output neuron depends only on R consecutive input neurons.
+This project implements the evaluation of a multi-layer Neural Network using OpenMP and CUDA. Each output neuron depends only on R consecutive input neurons. The network consists of K layers. Each output node is computed as:
+
+$$
+y_i = f \left(\sum_{r=0}^{R-1} x_{i+r} \times W_{i,r} + b\right)
+$$
+
+with $f(x)$ as the sigmoid activation function and a shared bias $b$. Because each output depends only on R inputs, the network is sparsely connected. 
 
 ## Project structure
 
@@ -68,5 +74,29 @@ The program takes two command-line arguments: `N` (number of neurons in the inpu
 
 The program takes two command-line arguments: `N`, `K`.
 
-```bash
+```
 ./main_cuda <N> <K>
+```
+
+## OpenMP Scalability Analysis
+
+Regarding the performance analysis of the OpenMP implementation, a scalability study was carried out, considering both strong scaling and weak scaling.
+
+```
+cd scripts
+./strong_scaling.sh
+./weak_scaling.sh
+```
+
+These scripts run `main_omp` with various thread counts and problem sizes, saving the execution times to `results/strong_scaling_results.txt` and `results/weak_scaling_results.txt`.
+
+## CUDA Performance Analysis
+
+```
+cd scripts
+./compare_cpu_gpu.sh
+```
+
+This script runs both implementations across different problem sizes and saves the results to `results/compare_cpu_gpu_results.txt`.
+
+To generate the performance plots (as seen in the report), you can run the `plot_results.py`. It reads the data files from the `results/` directory and saves the plots as PDFs in the plots/ directory.
