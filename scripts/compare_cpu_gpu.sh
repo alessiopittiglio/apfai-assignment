@@ -14,7 +14,6 @@
 N_SIZES=(250000 500000 1000000 2000000 4000000 8000000) # array of problem sizes (N) to test (adjust as needed)
 K=1000                  # number of layers (adjust as needed)
 R=5
-BLKDIM=512
 NREPS=5                 # number of replications for stable measurements
 
 PROG_OMP=./src_omp/main_omp
