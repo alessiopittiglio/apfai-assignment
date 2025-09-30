@@ -78,14 +78,12 @@ __device__ float sigmoid(float x) {
 }
 
 /* Fills layer, weights, and bias with random values in [0,1] */
-void fill(float *layer, int n, float *W, int r_dim, float *b) {
+void fill(float *layer, int n, float *W, int r, float *b) {
     for (int i = 0; i < n; i++) {
         layer[i] = (float)rand() / (float)RAND_MAX;
     }
-    for (int r = 0; r < r_dim; r++) {
-        for (int i = 0; i < n; i++) {
-            W[r * n + i] = (float)rand() / (float)RAND_MAX;
-        }
+    for (int i = 0; i < r * n; i++) {
+        W[i] = (float)rand() / (float)RAND_MAX;
     }
     *b = (float)rand() / (float)RAND_MAX;
 }
@@ -105,7 +103,7 @@ __global__ void compute_layer_global(
 
     float sum = b;
     for (int r = 0; r < R; ++r) {
-        sum += x[index + r] * W[r * N + index];
+        sum += x[index + r] * W[index * R + r];
     }
     y[index] = sigmoid(sum);
 }
@@ -147,7 +145,7 @@ __global__ void compute_layer_shared(
 
     float sum = b;
     for (int r = 0; r < R; ++r) {
-        sum += tile[lindex + r] * W[r * N + gindex];
+        sum += tile[lindex + r] * W[gindex * R + r];
     }
     y[gindex] = sigmoid(sum);
 }
