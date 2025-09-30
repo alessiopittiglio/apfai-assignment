@@ -31,7 +31,7 @@ if __name__ == "__main__":
     ax1.set_xticks(strong_df['p'])
     ax1.legend()
     ax1.grid(True)
-    fig1.savefig(os.path.join(PLOT_DIR, 'strong_scaling_speedup.pdf'))
+    fig1.savefig(os.path.join(PLOT_DIR, 'strong_scaling_speedup.png'))
 
     fig2, ax2 = plt.subplots()
     ax2.plot(strong_df['p'], strong_df['efficiency'], marker='o', linestyle='-', label='Strong scaling efficiency')
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     ax2.set_ylim(0, 1.05)
     ax2.legend()
     ax2.grid(True)
-    fig2.savefig(os.path.join(PLOT_DIR, 'strong_scaling_efficiency.pdf'))
+    fig2.savefig(os.path.join(PLOT_DIR, 'strong_scaling_efficiency.png'))
 
     weak_df = read_results(weak_file)
     t1 = weak_df['t_mean'].iloc[0]
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     ax3.set_ylim(0, 1.05)
     ax3.legend()
     ax3.grid(True)
-    fig3.savefig(os.path.join(PLOT_DIR, 'weak_scaling_efficiency.pdf'))
+    fig3.savefig(os.path.join(PLOT_DIR, 'weak_scaling_efficiency.png'))
 
     df = pd.read_csv(throughput_file, sep='\s+')
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     ax4.set_ylabel('Execution time (s)')
     ax4.legend()
     ax4.grid(True)
-    fig4.savefig(os.path.join(PLOT_DIR, 'wall_clock.pdf'))
+    fig4.savefig(os.path.join(PLOT_DIR, 'wall_clock.png'))
 
     fig5, ax5 = plt.subplots()
     ax5.plot(df['Problem_Size_(N)'], df['OMP_Tput_(Mneurons/s)'], marker='s', linestyle='-', label='OpenMP')
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     #     xytext=(x_last*0.7, y_last_omp*1.1),
     # )
 
-    fig5.savefig(os.path.join(PLOT_DIR, 'throughput.pdf'))
+    fig5.savefig(os.path.join(PLOT_DIR, 'throughput.png'))
 
     df['Speedup_Shared'] = df['OMP_Time_(s)'] / df['CUDA_Shared_Time_(s)']
     df['Speedup_Global'] = df['OMP_Time_(s)'] / df['CUDA_Global_Time_(s)']
@@ -132,4 +132,4 @@ if __name__ == "__main__":
     ax6.legend()
     ax6.grid(True, axis='y', linestyle='--', alpha=0.7)
     fig6.tight_layout()
-    fig6.savefig(os.path.join(PLOT_DIR, 'cuda_speedup_vs_openmp.pdf'))
+    fig6.savefig(os.path.join(PLOT_DIR, 'cuda_speedup_vs_openmp.png'))
