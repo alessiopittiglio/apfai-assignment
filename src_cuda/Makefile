@@ -1,7 +1,7 @@
 NVCC = nvcc
 
-R_VAL = 5
-NVFLAGS = -DR=$(R_VAL) -I../include
+R = 5
+NVFLAGS = -DR=$(R) -I../include
 
 TARGET = main_cuda
 
